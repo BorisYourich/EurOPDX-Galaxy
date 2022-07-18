@@ -24,7 +24,9 @@ wget https://raw.githubusercontent.com/BorisYourich/EurOPDX-Galaxy/main/docker-c
 
 ### Configure
 
+Set the `import` volume as the path to the directory where you store the data you want to process, to avoid copying the files into the container.
 
+Set the `reference-data` volume to match the new, empty directory that you created in the first step. This directory is where the container will store all the reference data for mapping software. (To avoid re-creating the data ech time the container is run)
 
 ```yaml
 version: '3.5'
@@ -33,17 +35,23 @@ services:
   galaxy:
     container_name: galaxy
     restart: always
-    image: edirex/galaxy:latest
+    image: registry.gitlab.ics.muni.cz:443/europdx/pdx-pipelines/galaxy-docker
     ports:
       - 8080:8080
 
     volumes:
       - /your/import/dir:/import
-      - /your/dir/to/store/reference/files:/galaxy/reference-data/
+      - ~/docker-galaxy/reference-data:/galaxy/reference-data/
 ```
 
+### Run the container
 
-If you do not wish to build the image yourself, which is unnecessary unless you need to change something radical in the image, then you only need to download the [docker-compose.yml](https://github.com/BorisYourich/EurOPDX-Galaxy/blob/main/docker-compose.yml) file and set the correct paths in the "volumes:". 
-First line defines which directory will be used as the library import directory by the container i.e. path to the folder where the data you want to proces are located. Second line tells the container where it should store the reference data e.g. Genome indexes, created by the mapper tools, so that you do not need to create them multiple times, because everytime you stop the running container, it deletes it's stored data. Do not change the second part of the argument after the ":" as it is associated with the internal structure of the image.
+In the `~/docker-galaxy` directory 
 
-After these modifications you are ready to start the container. In the terminal, move to the directory where you have downloaded the docker-compose.yml file and run "docker-compose up" command. You should see the image being downloaded, this will take some time, but it is only necessary to do it once. After download, the container will start and you can see the EurOPDX Galaxy instance on "localhost:8080" on your machine.
+```bash
+docker-compose up
+```
+
+After execution, a log from the container will show up in the terminal. If you run this for the first time, it will take a few minutes (depending on you internet connection) to pull the image.
+
+When the download is finnished, the container will start and you can see the EurOPDX Galaxy instance on "localhost:8080" on your machine.
