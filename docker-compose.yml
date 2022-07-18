@@ -4,7 +4,7 @@ services:
   galaxy:
     container_name: galaxy
     restart: always
-    image: edirex/galaxy:latest
+    image: registry.gitlab.ics.muni.cz:443/europdx/pdx-pipelines/galaxy-docker
     ports:
       - 8080:8080
 
