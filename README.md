@@ -55,3 +55,5 @@ docker-compose up
 After execution, a log from the container will show up in the terminal. If you run this for the first time, it will take a few minutes (depending on you internet connection) to pull the image.
 
 When the download is finnished, the container will start and you can see the EurOPDX Galaxy instance on `localhost:8080` on your machine.
+
+Log into the admin profile with name `admin` and password `password`
